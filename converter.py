@@ -1,4 +1,6 @@
 import os
+import threading
+from time import sleep
 
 # Coluna em que os remedios comecam
 remedios_col = 46
@@ -10,6 +12,12 @@ nome_data = os.path.join("data", "pmc.data")
 # NAO MODIFICAR A PARTIR DAQUI
 
 # CONVERTE UM XML EM UM DICIONARIO PYTHON, QUE SERA GUARDADO UM ARQUIVO .DATA
+
+def counter():
+    global count
+    while True:
+        sleep(1)
+        count += 1
 
 def remove_text(string):
     return str(string).replace("text:", "").replace("'", "")
@@ -23,6 +31,11 @@ def main():
     global nome_data
     global nome_xls
     global remedios_col
+    global count
+
+    # Calcular tempo levado
+    t1 = threading.Thread(target=counter, daemon=True)
+    t1.start()
 
     # Checar a existencia de um diretorio "data"
     data_exists = False
@@ -77,13 +90,15 @@ def main():
 
     # Organizar remedios por ordem alfabetica do produto
     print("Organizando remedios...")
-    remedios = dict(sorted(tuple(remedios.items()), key=lambda x: x[1]['PRODUTO']))
+    remedios = dict(sorted(tuple(remedios.items()), key=lambda x: f"{x[1]['PRODUTO']} {x[1]['LABORATÓRIO']} {x[1]['APRESENTAÇÃO']}"))
 
     print("Escrevendo dados...")
     with open(nome_data, "wb") as wf:
         pickle.dump(remedios, wf)
 
-    print("Convertido com sucesso!")
+    print("Convertido com sucesso!\nTempo total:", count, "segundos")
+
+count = 0
 
 if __name__ == "__main__":
     try:

@@ -18,7 +18,7 @@ def main():
     nome = ""
     while True:
         resultados = []
-        print("-"*80)
+        print("-"*100)
         nome = input("Remedio: ").strip().upper()
         system('cls' if name == 'nt' else 'clear')
         if nome == "SAIR":
@@ -26,7 +26,7 @@ def main():
         
         if "." in nome:
             for remedio in remedios:
-                if nome == remedios[remedio]['PRODUTO']:
+                if nome.replace(".", "") == remedios[remedio]['PRODUTO']:
                     resultados.append(remedio)
         else:
             for remedio in remedios:
@@ -35,9 +35,10 @@ def main():
         print("\nResultados:")
         
         for r in resultados:
-            print("-"*130)
+            mg = " ".join(remedios[r]['APRESENTAÇÃO'].split()[:2])
+            print("-"*100)
             print(
-                f"\nNome: {remedios[r]['PRODUTO']}\n"
+                f"\nNome: {remedios[r]['PRODUTO']} {mg} ({remedios[r]['LABORATÓRIO']})\n"
                 f"Substancia: {remedios[r]['SUBSTÂNCIA']}\n"
                 f"Apresentacao: {remedios[r]['APRESENTAÇÃO']}\n"
                 f"Tipo de Produto: {remedios[r]['TIPO DE PRODUTO (STATUS DO PRODUTO)']}\n"
