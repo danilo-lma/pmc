@@ -101,6 +101,7 @@ def main():
     # Mover arquivo xls para diretorio data
     os.rename(nome_xls, os.path.join("data", nome_xls))
     print("Convertido com sucesso!\nTempo total:", count, "segundos")
+    sleep(3)
 
 count = 0
 
